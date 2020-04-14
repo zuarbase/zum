@@ -57,9 +57,12 @@ class zUserList extends HTMLElement {
   			this._shadowRoot.firstChild.replaceWith(template.content.firstChild.cloneNode(true));
   		}
 
-  		this._shadowRoot.querySelectorAll('.user').forEach(userEl => {
+  		this.addClickHandlers();
+    }
+
+    addClickHandlers () {
+    	this._shadowRoot.querySelectorAll('.user').forEach(userEl => {
   			userEl.onclick = (event) => {
-  				event.preventDefault();
   				this.parentElement.classList.add('active');
   				let clickedUserId = Number.parseInt(userEl.dataset.userId, 10);
   				let user = this._users.find(user => user.id === clickedUserId);
@@ -68,19 +71,10 @@ class zUserList extends HTMLElement {
 		    	}
 			};
 		});
-
     }
 
-    // currently inlined
-    onUserClick (event) {
-    	if (typeof this._userClickCallback === 'function') {
-    		this._userClickCallback.prototype.call(this, this._users.find(user => user.id === userId));
-    	}
-    }
-
-    set users (user) {
-    	console.debug('Setting users', user);
-    	this._users = user;
+    set users (users) {
+    	this._users = users;
     	this.render();
 	}
 	  
